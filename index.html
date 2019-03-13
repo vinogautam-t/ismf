@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Expense Tracker</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="styles/vendor.css" />
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+  </head>
+  <body ng-app="yapp">
+    
+    <!-- Add your site or application content here -->
+    <div class="">
+      <div ui-view ></div>
+    </div>
+
+   
+    <script src="scripts/vendor.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script src="scripts/notify.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/dashboard.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBMhJHdi_VUUo_YHABiyEwNIlh4c3n3VrM",
+        authDomain: "ism-users.firebaseapp.com",
+        databaseURL: "https://ism-users.firebaseio.com",
+        projectId: "ism-users",
+        storageBucket: "ism-users.appspot.com",
+        messagingSenderId: "564057211355"
+      };
+      firebase.initializeApp(config);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<snap-dragger></snap-dragger>
+	<snap-content snap-opt-tap-to-close="false" class="bg-dark">
+		<a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a>
+		
+		<div class="fr">
+		<h2><small>New Loan Request</small></h2>
+		</div>
+		<div class="text-center">
+			<div class="totalamount">
+				<span>Eligiblity Amount:</span>
+				<i class="fa fa-rupee"></i> {{eligilityAmount}}	
+			</div>
+		</div>
+		<div class="jumbotron">
+			<div class="container">
+				<form name="expense_form" role="form" class="bottom-75" ng-submit="newloadRequest()" novalidate="">
+					<div class="table-form">
+						<div class="form-groups">
+							<div class="form-group"> 	 
+								<label>Reason For Your Request</label>
+								<textarea required ng-model="loanrequest.reason" class="form-control input-lg" id=""></textarea>
+							</div>
+							<div class="form-group">
+								<label>Request Amount</label>
+								<input max="{{eligilityAmount}}" type="number" required ng-model="loanrequest.amount" class="form-control input-lg" id="">
+							</div>
+							<input ng-disabled="expense_form.$invalid" type="submit" class="btn btn-primary" value="sumbit Request" name="">
+						</div>
+					</div>		
+				</form>
+			</div>
+		</div>
+	</snap-content>	
+</div>

@@ -1,0 +1,52 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<snap-dragger></snap-dragger>
+	<snap-content snap-opt-tap-to-close="false">
+
+		<a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a>
+		
+		<div class="fr">
+		<h2><small>WELCOME {{user.name}}!</small></h2>
+		<h1 class="commonheading">ISM Saving Group</h1>
+		</div>
+		<div class="text-center">
+			<div class="totalamount">
+				<span>Current Outstanding:</span>
+				<i class="fa fa-rupee"></i> {{overview.balance}}	
+			</div>
+		</div>
+		<div class="jumbotron">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 text-center overview-tiles">
+						<div class="table-responsive">
+							<table class="table">
+								<tr>
+									<th>#</th>
+									<th>Date</th>
+									<th>Particulars</th>
+									<th>Type</th>
+									<th>Amount</th>
+									<th>Balance</th>
+								</tr>
+								<tr ng-repeat="(k,tr) in transactions">
+									<td>{{$index + 1}}</td>
+									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
+									<td>{{userObj[tr.user].name}}<span ng-if="tr.notes">- {{tr.notes}}</span></td>
+									<td>{{tr.action}}</td>
+									<td class="{{tr.type}}"><span ng-if="tr.type == 'debit'">-</span>{{tr.amount}}</td>
+									<td>{{tr.balance}}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</snap-content>	
+</div>

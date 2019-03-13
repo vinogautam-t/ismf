@@ -1,0 +1,12 @@
+@media only screen and (max-width: 768px) {
+    .totalamount{
+        margin-bottom:10px;
+    }
+    .commonheading{
+        margin-left:-60px;
+    }
+    .dashboard-page .main .jumbotron{
+        margin: 0;
+        padding: 0;
+    }
+}

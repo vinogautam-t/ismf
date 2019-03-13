@@ -1,0 +1,91 @@
+<div>
+	<div ng-include="'menu.html'"></div>
+	<snap-dragger></snap-dragger>
+	<snap-content snap-opt-tap-to-close="false">
+
+		<a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a>
+		
+		<div class="fr">
+		<h2><small>WELCOME {{user.name}}!</small></h2>
+		<h1 class="commonheading">ISM Saving Group</h1>
+		</div>
+		
+		<div class="text-center">
+			<div class="totalamount">
+				<span>Current Outstanding:</span>
+				<i class="fa fa-rupee"></i> {{overview.balance}}	
+			</div>
+			<div class="totalamount">
+				<span>Total Savings:</span>
+				<i class="fa fa-rupee"></i> {{overview.savings}}	
+			</div>
+			<div class="totalamount">
+				<span>Total Interest:</span>
+				<i class="fa fa-rupee"></i> {{overview.interest}}	
+			</div>
+		</div>
+		
+		<div class="jumbotron">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 text-center overview-tiles">
+						<div class="row">
+							<div class="col-md-6 col-sm-12" ng-if="havePendingTransactions && user.isAdmin">
+								<h3>Paid Savings Approval</h3>
+								<div class="table-responsive">
+									<table class="table">
+										<tr>
+											<th>#</th>
+											<th>Date</th>
+											<th>User</th>
+											<th>Action</th>
+										</tr>
+										<tr ng-repeat="(k,p) in pendingtransactions">
+											<td>{{$index + 1}}</td>
+											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
+											<td>{{userObj[p.user].name}}<span ng-if="p.notes">- {{p.notes}}</span></td>
+											<td><button class="btn btn-primary" ng-click="approveSaving(k, p)">Accept</button></td>
+											<td><button class="btn btn-danger" ng-click="declineSaving(k, p)">Decline</button></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-12" ng-if="loanRequests">
+								<h3>New Loan Request Approval</h3>
+								<div class="table-responsive">
+									<table class="table">
+										<tr>
+											<th>#</th>
+											<th>Date</th>
+											<th>User</th>
+											<th>Amount</th>
+											<th>Reason</th>
+											<th>Approved</th>
+											<th>Action</th>
+										</tr>
+										<tr ng-repeat="(k,p) in loanRequests">
+											<td>{{$index + 1}}</td>
+											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
+											<td>{{userObj[p.user].name}}</td>
+											<td>{{p.amount}}</td>
+											<td>{{p.reason}}</td>
+											<td>{{p.approved.length}}</td>
+											<td><button ng-if="p.user != user.id" class="btn btn-primary" ng-click="approveLoanRequest(k, p)">Approve</button></td>
+											<td><button ng-if="p.user == user.id" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button></td>
+											<td><button ng-if="user.isAdmin" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</snap-content>	
+</div>
