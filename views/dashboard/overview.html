@@ -78,8 +78,8 @@
 											<td>
 												<button ng-if="p.req_by != user.id && p.approved.indexOf(user.id) !== -1" class="btn btn-primary">Accepted</button>
 												<button ng-if="p.req_by != user.id && p.approved.indexOf(user.id) === -1" class="btn btn-primary" ng-click="acceptLoanRequest(k, p)">Accept</button>
-												<button ng-if="p.req_by == user.id" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button>
-												<button ng-if="user.isAdmin && p.approved && p.approved.length > 10" class="btn btn-primary" ng-click="approveLoanRequest(k, p)">Approve</button>
+												<button ng-if="p.req_by == user.id || user.isAdmin" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button>
+												<button ng-if="user.isAdmin" class="btn btn-primary" ng-click="approveLoanRequest(k, p)">{{p.approved.length}} - Approve</button>
 											</td>
 										</tr>
 									</table>

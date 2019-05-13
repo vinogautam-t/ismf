@@ -81,10 +81,28 @@ angular.module('yapp')
     });
     
     $scope.loanRequests = {};
+    $scope.activeloans = {};
+    $scope.closed_loans = {};
     $scope.haveloanRequests = 0;
     firebase.database().ref('loanrequest').on('value', function(snap) {
-        $scope.haveloanRequests = snap.numChildren();
-        $scope.loanRequests = snap.val();
+        
+        var loanRequests = snap.val();
+        $scope.loanRequests = {};
+        $scope.activeloans = {};
+        $scope.closed_loans = {};
+        $scope.haveloanRequests = 0;
+        angular.forEach(loanRequests, function(v,k) {
+            if(v.loan_status == 0){
+              $scope.loanRequests[k] = v;
+              $scope.haveloanRequests++;
+            } else if(v.loan_status == 1){
+              $scope.activeloans[k] = v;
+            } else if(v.loan_status == 2){
+              $scope.closed_loans[k] = v;
+            }
+        });
+        
+        
         $scope.$apply();
     });
     
@@ -112,6 +130,29 @@ angular.module('yapp')
     };
     
     $scope.approveLoanRequest = function(k,v){
+        firebase.database().ref('loanrequest'+'/'+k+'/loan_status').set(1);
+        $scope.newloan = {ref: k};
+        $scope.newloan.ts = new Date().getTime();
+        $scope.newloan.type = 'debit';
+        $scope.newloan.action = 'loan';
+        $scope.newloan.ref = 'loan';
+        $scope.newloan.user = angular.copy(v.req_by);
+        $scope.newloan.amount = angular.copy(v.amount);
+        $scope.newloan.notes = 'Loan Ref - '+k;
+        if($scope.user.isAdmin){
+          $scope.overview.balance = parseInt($scope.overview.balance) - parseInt(v.amount);
+          firebase.database().ref('summary/balance').set($scope.overview.balance);
+          
+          $scope.newloan.balance = $scope.overview.balance;
+          firebase.database().ref('transaction').push($scope.newloan);
+          $.notify("Payment Submitted", "success");
+        } else {
+          $.notify("Invalid Entry", "error");
+        }
+        
+        $state.go('statement');
+        
+        return false;
     };
     
     $scope.acceptLoanRequest = function(k,v){
@@ -159,6 +200,7 @@ angular.module('yapp')
       $scope.loanrequest.ts = new Date().getTime();
       $scope.loanrequest.req_by = angular.copy($scope.user.id);
       $scope.loanrequest.approved = [];
+      $scope.loanrequest.loan_status = 0;
       firebase.database().ref('loanrequest').push($scope.loanrequest);
       $.notify("Your loan request submitted", "info");
       $state.go('overview');
@@ -166,6 +208,16 @@ angular.module('yapp')
       $scope.loanrequest = {amount: angular.copy($scope.eligilityAmount)};
       
       return false;
+    };
+    
+    $scope.checkloanExist = function(){
+        //$scope.activeloans = {};
+        
+        //$scope.loanRequests = {};
+    };
+    
+    $scope.loanDetails = function(){
+      
     };
 
   });

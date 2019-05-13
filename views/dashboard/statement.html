@@ -37,7 +37,7 @@
 								<tr ng-repeat="(k,tr) in transactions">
 									<td>{{$index + 1}}</td>
 									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
-									<td>{{userObj[tr.user].name}}<span ng-if="tr.notes">- {{tr.notes}}</span></td>
+									<td>{{userObj[tr.user].name}}<span ng-if="tr.notes"> - {{tr.notes}}</span></td>
 									<td>{{tr.action}}</td>
 									<td class="{{tr.type}}"><span ng-if="tr.type == 'debit'">-</span>{{tr.amount}}</td>
 									<td>{{tr.balance}}</td>
