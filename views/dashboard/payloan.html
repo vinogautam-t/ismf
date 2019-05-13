@@ -10,33 +10,57 @@
 		</a>
 		
 		<div class="fr">
-		<h2><small>Pay Loan</small></h2>
+		<h2><small>Pay loan</small></h2>
 		</div>
+			<div class="text-center">
+			<div class="totalamount">
+				<span>Loan Amount</span>
+				<i class="fa fa-rupee"></i> {{overview.balance}}	
+			</div>
+			<div class="totalamount">
+				<span>Loan Paid</span>
+				<i class="fa fa-rupee"></i> {{overview.savings}}	
+			</div>
+			<div class="totalamount">
+				<span>Curent Outstanding</span>
+				<i class="fa fa-rupee"></i> {{overview.interest}}	
+			</div>
+		</div>
+		
 		<div class="jumbotron">
 			<div class="container">
-				<form name="expense_form" role="form" class="bottom-75" ng-submit="expense_form.$valid ? add_expense() : ''" novalidate="">
-					<div class="table-form">
-						<div class="form-groups">
-							<div class="form-group">
-								<label>Paid on </label>
-								<input type="text" required ng-model="expense.edate" class="form-control input-lg" id="">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 text-center overview-tiles">
+						<div class="row">
+							<div>
+								<h3>Loan Transaction Details</h3>
+								<div class="table-responsive">
+									<table class="table">
+										<tr>
+											<th>#</th>
+											<td>Date</td>
+											<th>Interest(%)- MTH</th>
+											<th>Interest Amount</th>
+											<th>Principal Amount</th>
+											<th>Balance</th>
+											<th>Action</th>
+										</tr>
+										<tr ng-repeat="(k,p) in pendingtransactions">
+											<td>{{$index + 1}}</td>
+											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
+											<td></td>
+											<td></td>
+											<td><input class="form-control" type="number" ></input></td>
+											<td></td>
+											<td><button class="btn btn-primary">Pay</button></td>
+										</tr>
+									</table>
+								</div>
 							</div>
 							
-							<div class="form-group">
-								<label>Amount</label>
-								<input type="number" required ng-model="expense.amount" class="form-control input-lg" id="">
-							</div>
-							<div class="form-group">
-								<label>Paid For</label>
-								<select required class="form-control input-lg" ng-model="expense.paid_by">
-									<option value="">Select user</option>
-									<option ng-repeat="us in users" value="{{us.id}}">{{us.name}}-{{us.mobile}}</option>
-								</select>
-							</div>
-							<input ng-disabled="expense_form.$invalid" type="submit" class="btn btn-primary" value="Paid Now" name="">
 						</div>
-					</div>		
-				</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</snap-content>	

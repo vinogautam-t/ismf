@@ -65,19 +65,22 @@
 											<th>User</th>
 											<th>Amount</th>
 											<th>Reason</th>
-											<th>Approved</th>
+											<th>Approved Count</th>
 											<th>Action</th>
 										</tr>
-										<tr ng-repeat="(k,p) in loanRequests">
+										<tr ng-repeat="(k,p) in loanRequests" ng-init="p.approved=p.approved?p.approved:[];">
 											<td>{{$index + 1}}</td>
 											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
-											<td>{{userObj[p.user].name}}</td>
+											<td>{{userObj[p.req_by].name}}</td>
 											<td>{{p.amount}}</td>
 											<td>{{p.reason}}</td>
-											<td>{{p.approved.length}}</td>
-											<td><button ng-if="p.user != user.id" class="btn btn-primary" ng-click="approveLoanRequest(k, p)">Approve</button></td>
-											<td><button ng-if="p.user == user.id" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button></td>
-											<td><button ng-if="user.isAdmin" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button></td>
+											<td>{{p.approved ? p.approved.length : 0}}</td>
+											<td>
+												<button ng-if="p.req_by != user.id && p.approved.indexOf(user.id) !== -1" class="btn btn-primary">Accepted</button>
+												<button ng-if="p.req_by != user.id && p.approved.indexOf(user.id) === -1" class="btn btn-primary" ng-click="acceptLoanRequest(k, p)">Accept</button>
+												<button ng-if="p.req_by == user.id" class="btn btn-primary" ng-click="cancelLoanRequest(k, p)">Cancel</button>
+												<button ng-if="user.isAdmin && p.approved && p.approved.length > 10" class="btn btn-primary" ng-click="approveLoanRequest(k, p)">Approve</button>
+											</td>
 										</tr>
 									</table>
 								</div>

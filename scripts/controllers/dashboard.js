@@ -112,12 +112,16 @@ angular.module('yapp')
     };
     
     $scope.approveLoanRequest = function(k,v){
+    };
+    
+    $scope.acceptLoanRequest = function(k,v){
+      v.approved = v.approved ? v.approved : [];
       v.approved.push($scope.user.id);
-      firebase.database().ref('loanrequest'+'/'+key+'/approved').set(v.approved);
+      firebase.database().ref('loanrequest'+'/'+k+'/approved').set(v.approved);
       $.notify("You approved - "+$scope.userObj[v.user].name+" loan request", "success");
     };
     
-    $scope.cancelLoanRequest = function(){
+    $scope.cancelLoanRequest = function(key){
         firebase.database().ref('loanrequest'+'/'+key).remove();
         $.notify("Your loan request Cancelled", "success");
     };
