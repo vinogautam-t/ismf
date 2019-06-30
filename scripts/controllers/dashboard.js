@@ -20,7 +20,7 @@ angular.module('yapp')
     $scope.overview = {};
     $scope.eligilityAmount = 0;
     
-    
+    $scope.currentTime = new Date().getTime();
     $scope.expense = {amount: 500};
 
     var query = firebase.database().ref('summary');
@@ -210,14 +210,62 @@ angular.module('yapp')
       return false;
     };
     
+    $scope.loanrequestExist = false;
+    $scope.loanExist = false;
+    
     $scope.checkloanExist = function(){
-        //$scope.activeloans = {};
+      
+        $scope.loanrequestExist = false;
+        $scope.loanExist = false;
+        angular.forEach($scope.activeloans, function(v,k){
+          if(v.req_by == $scope.user.id){
+            $scope.loanExist = true;
+          }
+        });
         
-        //$scope.loanRequests = {};
+        angular.forEach($scope.loanRequests, function(v,k){
+          if(v.req_by == $scope.user.id){
+            $scope.loanrequestExist = true;
+          }
+        });
     };
     
+    $scope.myloan = {};
+    
     $scope.loanDetails = function(){
-      
+      angular.forEach($scope.activeloans, function(v,k){
+        if(v.req_by == $scope.user.id){
+          $scope.myloan = angular.copy(v);
+          $scope.myloan.id = k;
+          
+          $scope.myloan.totaldue = 0;
+          if($scope.myloan.transaction){
+              angular.forEach($scope.myloan.transaction, function(vv,kk) {
+                $scope.myloan.totaldue++;
+                vv.ind = $scope.myloan.totaldue;
+              });
+          }
+        }
+      });
     };
-
+    
+    $scope.payloan = function(){
+        $scope.myloan.outstanding = $scope.myloan.outstanding - $scope.myloan.principle;
+        var loandt = {};
+        loandt.interest = $scope.myloan.interest;
+        loandt.principle = $scope.myloan.principle;
+        loandt.outstanding = $scope.myloan.outstanding;
+        loandt.interestrate = $scope.myloan.interestrate
+        loandt.ts = new Date().getTime();
+        
+        if(loandt.outstanding == 0){
+          firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/loan_status').set(2);
+        }
+        firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/lastpaid').set(loandt.ts);
+        firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/outstanding').set(loandt.outstanding);
+        $scope.myloan.totalinterest = $scope.myloan.totalinterest ? (parseInt($scope.myloan.totalinterest) + parseInt(loandt.interest)) : loandt.interest;
+        firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/totalinterest').set($scope.myloan.totalinterest);
+        firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/transaction').push(loandt);
+    };
+    
   });
