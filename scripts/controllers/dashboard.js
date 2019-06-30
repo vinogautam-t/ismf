@@ -281,7 +281,6 @@ angular.module('yapp')
         payloan.ts = new Date().getTime();
         payloan.type = 'credit';
         payloan.action = 'payloan';
-        payloan.ref = 'payloan';
         payloan.user = $scope.user.id;
         payloan.amount = tamt;
         payloan.notes = 'Loan Ref - '+$scope.myloan.id+' Principle - '+$scope.myloan.principle + ' Interest - '+$scope.myloan.interest;
