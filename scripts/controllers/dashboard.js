@@ -279,7 +279,7 @@ angular.module('yapp')
         
         var payloan = {ref: $scope.myloan.id};
         payloan.ts = new Date().getTime();
-        payloan.type = 'debit';
+        payloan.type = 'credit';
         payloan.action = 'payloan';
         payloan.ref = 'payloan';
         payloan.user = $scope.user.id;
