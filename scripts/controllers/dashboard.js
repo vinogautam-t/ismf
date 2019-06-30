@@ -129,6 +129,8 @@ angular.module('yapp')
         $.notify("Saving Request Declined", "success");
     };
     
+    $scope.pageInfo = {user_id: 0};
+    
     $scope.approveLoanRequest = function(k,v){
         firebase.database().ref('loanrequest'+'/'+k+'/loan_status').set(1);
         $scope.newloan = {ref: k};
@@ -266,6 +268,25 @@ angular.module('yapp')
         $scope.myloan.totalinterest = $scope.myloan.totalinterest ? (parseInt($scope.myloan.totalinterest) + parseInt(loandt.interest)) : loandt.interest;
         firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/totalinterest').set($scope.myloan.totalinterest);
         firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/transaction').push(loandt);
+        
+        var tamt = parseInt($scope.myloan.principle) + parseInt($scope.myloan.interest);
+        
+        $scope.overview.balance = tamt + parseInt($scope.overview.balance);
+        firebase.database().ref('summary/balance').set($scope.overview.balance);
+        
+        $scope.overview.interest = parseInt($scope.myloan.interest) + parseInt($scope.overview.interest);
+        firebase.database().ref('summary/interest').set($scope.overview.interest);
+        
+        var payloan = {ref: $scope.myloan.id};
+        payloan.ts = new Date().getTime();
+        payloan.type = 'debit';
+        payloan.action = 'payloan';
+        payloan.ref = 'payloan';
+        payloan.user = $scope.user.id;
+        payloan.amount = tamt;
+        payloan.notes = 'Loan Ref - '+$scope.myloan.id+' Principle - '+$scope.myloan.principle + ' Interest - '+$scope.myloan.interest;
+        payloan.balance = $scope.overview.balance;
+        firebase.database().ref('transaction').push(payloan);
     };
     
   });

@@ -58,7 +58,7 @@
 											<td>-</td>
 										</tr>
 										<tr>
-											<td></td>
+											<td>{{$scope.myloan.totaldue+1}}</td>
 											<td>{{(currentTime | date: 'dd-MM-yyyy')}}</td>
 											<td ng-init="myloan.interestrate = myloan.totaldue > 12 ? 2 : 1">{{myloan.interestrate}}RS</td>
 											<td><input readonly ng-init="myloan.interest=myloan.outstanding ? ((myloan.outstanding / 100) * myloan.interestrate) : ((myloan.amount / 100) * myloan.interestrate)" class="form-control" ng-model="myloan.interest"></td>
