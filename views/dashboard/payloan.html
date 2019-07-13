@@ -14,67 +14,70 @@
 		</div>
 		<p class="text-center" style="font-size:20px;margin-top:30px;color:red;" ng-if="!myloan.id">Dont have any active loan</p>
 		<div ng-if="myloan.id">
-			{{myloan}}
-		<div  class="text-center">
-			<div class="totalamount">
-				<span>Loan Amount</span>
-				<i class="fa fa-rupee"></i> {{myloan.amount}}	
+			<div  class="text-center">
+				<div class="totalamount">
+					<span>Loan Amount</span>
+					<i class="fa fa-rupee"></i> {{myloan.amount}}	
+				</div>
+				<div class="totalamount">
+					<span>Loan Paid</span>
+					<i class="fa fa-rupee"></i> {{myloan.amount - myloan.outstanding}}	
+				</div>
+				<div class="totalamount">
+					<span>Curent Outstanding</span>
+					<i class="fa fa-rupee"></i> {{myloan.outstanding}}	
+				</div>
+				<div class="totalamount">
+					<span>Total Interest</span>
+					<i class="fa fa-rupee"></i> {{myloan.totalinterest}}	
+				</div>
 			</div>
-			<div class="totalamount">
-				<span>Loan Paid</span>
-				<i class="fa fa-rupee"></i> {{myloan.paid}}	
-			</div>
-			<div class="totalamount">
-				<span>Curent Outstanding</span>
-				<i class="fa fa-rupee"></i> {{myloan.amount - myloan.paid}}	
-			</div>
-		</div>
-		
-		<div class="jumbotron">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 col-sm-12 text-center overview-tiles">
-						<div class="row">
-							<div>
-								<h3>Loan Transaction Details</h3>
-								<div class="table-responsive">
-									<table class="table">
-										<tr>
-											<th>#</th>
-											<td>Date</td>
-											<th>Interest(%)- MTH</th>
-											<th>Interest Amount</th>
-											<th>Principal Amount</th>
-											<th>Balance</th>
-											<th>Action</th>
-										</tr>
-										<tr ng-repeat="(k,p) in myloan.transaction">
-											<td>{{$index + 1}}</td>
-											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
-											<td>{{p.interestrate}}</td>
-											<td>{{p.interest}}</td>
-											<td>{{p.principle}}</td>
-											<td>{{p.outstanding}}</td>
-											<td>-</td>
-										</tr>
-										<tr>
-											<td>{{$scope.myloan.totaldue+1}}</td>
-											<td>{{(currentTime | date: 'dd-MM-yyyy')}}</td>
-											<td ng-init="myloan.interestrate = myloan.totaldue > 12 ? 2 : 1">{{myloan.interestrate}}RS</td>
-											<td><input readonly ng-init="myloan.interest=myloan.outstanding ? ((myloan.outstanding / 100) * myloan.interestrate) : ((myloan.amount / 100) * myloan.interestrate)" class="form-control" ng-model="myloan.interest"></td>
-											<td><input class="form-control" ng-model="myloan.principle"></td>
-											<td ng-init="myloan.outstanding = myloan.outstanding ? myloan.outstanding : myloan.amount;">{{myloan.outstanding ? (myloan.outstanding - myloan.principle) : (myloan.amount - myloan.principle)}}</td>
-											<td><button class="btn btn-primary" ng-click="payloan();">Pay</button></td>
-										</tr>
-									</table>
+			
+			<div class="jumbotron">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 text-center overview-tiles">
+							<div class="row">
+								<div>
+									<h3>Loan Transaction Details</h3>
+									<div class="table-responsive">
+										<table class="table">
+											<tr>
+												<th>#</th>
+												<td>Date</td>
+												<th>Interest(%)- MTH</th>
+												<th>Interest Amount</th>
+												<th>Principal Amount</th>
+												<th>Balance</th>
+												<th>Action</th>
+											</tr>
+											<tr ng-repeat="(k,p) in myloan.transaction">
+												<td>{{$index + 1}}</td>
+												<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
+												<td>{{p.interestrate}}RS</td>
+												<td>{{p.interest}}</td>
+												<td>{{p.principle}}</td>
+												<td>{{p.outstanding}}</td>
+												<td>-</td>
+											</tr>
+											<tr ng-if="(currentTime | date: 'MM-yyyy') != (myloan.lastpaid | date: 'MM-yyyy')">
+												<td>{{myloan.totaldue+1}}</td>
+												<td>{{(currentTime | date: 'dd-MM-yyyy')}}</td>
+												<td ng-init="myloan.interestrate = myloan.totaldue > 12 ? 2 : 1">{{myloan.interestrate}}RS</td>
+												<td><input readonly ng-init="myloan.interest=myloan.outstanding ? ((myloan.outstanding / 100) * myloan.interestrate) : ((myloan.amount / 100) * myloan.interestrate)" class="form-control" ng-model="myloan.interest"></td>
+												<td><input class="form-control" ng-model="myloan.principle"></td>
+												<td ng-init="myloan.outstanding = myloan.outstanding ? myloan.outstanding : myloan.amount;">{{myloan.outstanding ? (myloan.outstanding - myloan.principle) : (myloan.amount - myloan.principle)}}</td>
+												<td><button class="btn btn-primary" ng-click="payloan();">Pay</button></td>
+											</tr>
+										</table>
+									</div>
 								</div>
+								
 							</div>
-							
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</snap-content>	
 </div>
