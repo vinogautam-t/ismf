@@ -91,20 +91,22 @@
 									<table class="table">
 										<tr>
 											<th>#</th>
-											<th>Loan Date/Last Paid</th>
+											<th>Loan Date</th>
 											<th>User</th>
 											<th>Loan Amount</th>
 											<th>Outstanding</th>
 											<th>Interest Paid</th>
+											<th>Last Paid</th>
 											<th>Action</th>
 										</tr>
 										<tr ng-repeat="(k,p) in activeloans">
 											<td>{{$index + 1}}</td>
-											<td>{{p.ts | date: 'dd-MM-yyyy'}} / <span>{{p.lastpaid | date: 'dd-MM-yyyy'}}</span></td>
+											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
 											<td>{{userObj[p.req_by].name}}</td>
 											<td>{{p.amount}}</td>
 											<td>{{p.outstanding ? p.outstanding: p.amount}}</td>
 											<td>{{p.totalinterest ? p.totalinterest : 0}}</td>
+											<td><span ng-if="p.lastpaid">{{p.lastpaid | date: 'dd-MM-yyyy'}}</span></td>
 											<td>
 												<button ui-sref="viewloan({id:k})">View</button>
 											</td>
