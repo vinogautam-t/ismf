@@ -41,7 +41,7 @@
 								<div class="col-md-6 col-sm-12">User: {{userObj[myloan.req_by].name}}</div>
 								<div class="col-md-6 col-sm-12">Loan Date: {{myloan.ts | date: 'dd-MM-yyyy'}}</div>
 								<div ng-show="user.isAdmin" class="col-md-6 col-sm-12">Enter Missed Payment <input type="checkbox" ng-model="missed_payment"></div>
-								<div class="col-md-12 col-sm-12">
+								<div class="col-md-12 col-sm-12" ng-if="currentTime | date: 'MM-yyyy') != (myloan.ts | date: 'MM-yyyy')">
 									<h3>Loan Transaction Details</h3>
 									<div class="table-responsive">
 										<table class="table">
