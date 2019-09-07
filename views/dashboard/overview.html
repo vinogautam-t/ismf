@@ -85,6 +85,33 @@
 									</table>
 								</div>
 							</div>
+							<div class="col-md-6 col-sm-12" ng-if="activeloans">
+								<h3>Active Loans</h3>
+								<div class="table-responsive">
+									<table class="table">
+										<tr>
+											<th>#</th>
+											<th>Loan Date</th>
+											<th>User</th>
+											<th>Loan Amount</th>
+											<th>Outstanding</th>
+											<th>Interest Paid</th>
+											<th>Action</th>
+										</tr>
+										<tr ng-repeat="(k,p) in activeloans">
+											<td>{{$index + 1}}</td>
+											<td>{{p.ts | date: 'dd-MM-yyyy'}}</td>
+											<td>{{userObj[p.req_by].name}}</td>
+											<td>{{p.amount}}</td>
+											<td>{{p.outstanding ? p.outstanding: p.amount}}</td>
+											<td>{{p.totalinterest ? p.totalinterest : 0}}</td>
+											<td>
+												<button ui-sref="viewloan({id:k})">View</button>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

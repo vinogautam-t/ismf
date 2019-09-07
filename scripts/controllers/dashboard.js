@@ -239,7 +239,7 @@ angular.module('yapp')
         if(v.req_by == $scope.user.id){
           $scope.myloan = angular.copy(v);
           $scope.myloan.id = k;
-          
+          $scope.myloan.principle = 0;
           $scope.myloan.totaldue = 0;
           if($scope.myloan.transaction){
               angular.forEach($scope.myloan.transaction, function(vv,kk) {
@@ -250,7 +250,24 @@ angular.module('yapp')
         }
       });
     };
+
+    $scope.loanDetails2 = function(){
+      firebase.database().ref('loanrequest/'+$state.params.id).once('value', function(snap) {
+        $scope.myloan = snap.val();
+        $scope.myloan.id = $state.params.id;
+          $scope.myloan.principle = 0;
+          $scope.myloan.totaldue = 0;
+          if($scope.myloan.transaction){
+              angular.forEach($scope.myloan.transaction, function(vv,kk) {
+                $scope.myloan.totaldue++;
+                vv.ind = $scope.myloan.totaldue;
+              });
+          }
+      });
+    };
     
+    $scope.missed_payment = false;
+
     $scope.payloan = function(){
         $scope.myloan.outstanding = $scope.myloan.outstanding - $scope.myloan.principle;
         var loandt = {};
@@ -269,7 +286,7 @@ angular.module('yapp')
         firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/totalinterest').set($scope.myloan.totalinterest);
         firebase.database().ref('loanrequest'+'/'+$scope.myloan.id+'/transaction').push(loandt);
         
-        var tamt = parseInt($scope.myloan.principle) + parseInt($scope.myloan.interest);
+        var tamt = parseInt($scope.myloan.principle) + parseInt(loandt.interest);
         
         $scope.overview.balance = tamt + parseInt($scope.overview.balance);
         firebase.database().ref('summary/balance').set($scope.overview.balance);
@@ -281,11 +298,13 @@ angular.module('yapp')
         payloan.ts = new Date().getTime();
         payloan.type = 'credit';
         payloan.action = 'payloan';
-        payloan.user = $scope.user.id;
+        payloan.user = $scope.myloan.req_by;
         payloan.amount = tamt;
         payloan.notes = 'Loan Ref - '+$scope.myloan.id+' Principle - '+$scope.myloan.principle + ' Interest - '+$scope.myloan.interest;
         payloan.balance = $scope.overview.balance;
         firebase.database().ref('transaction').push(payloan);
+
+        $state.go('statement');
     };
     
   });
