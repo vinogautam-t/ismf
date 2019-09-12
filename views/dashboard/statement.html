@@ -21,26 +21,44 @@
 			</div>
 		</div>
 		<div class="jumbotron">
+			<div class="text-center">
+				<div ng-show="user.isAdmin">Show Full report <input type="checkbox" ng-model="pageInfo.show_full_report"></div>
+			</div>
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 text-center overview-tiles">
 						<div class="table-responsive">
-							<table class="table">
+							<table class="table" ng-init="pageInfo.ovt = {a: 0, b: 0, c: 0};">
 								<tr>
 									<th>#</th>
 									<th>Date</th>
 									<th>Particulars</th>
 									<th>Type</th>
 									<th>Amount</th>
-									<th>Balance</th>
+									<th ng-if="pageInfo.show_full_report">Total Savings(A)</th>
+									<th ng-if="pageInfo.show_full_report">Total Interest(B)</th>
+									<th>Out. Balance<span ng-if="pageInfo.show_full_report">(C)</span></th>
+									<th ng-if="pageInfo.show_full_report">Out. Loan Amt(D)</th>
+									<th ng-if="pageInfo.show_full_report">A+B</th>
+									<th ng-if="pageInfo.show_full_report">C+D</th>
+									<th ng-if="pageInfo.show_full_report">A+B=C+D</th>
 								</tr>
-								<tr ng-repeat="(k,tr) in transactions">
+								<tr ng-repeat="(k,tr) in transactions" ng-init="statement_calc(tr);">
 									<td>{{$index + 1}}</td>
 									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
-									<td>{{userObj[tr.user].name}}<span ng-if="tr.notes"> - {{tr.notes}}</span></td>
+									<td>{{userObj[tr.user].name}}
+										<span ng-if="tr.notes && tr.action != 'payloan'"> - {{tr.notes}}</span>
+										<span ng-if="tr.notes && tr.action == 'payloan'"> - <a style="color: inherit;" ui-sref="viewloan({id:tr.ref})">{{tr.notes}}</a></span>
+									</td>
 									<td>{{tr.action}}</td>
 									<td class="{{tr.type}}"><span ng-if="tr.type == 'debit'">-</span>{{tr.amount}}</td>
+									<td ng-if="pageInfo.show_full_report">{{tr.balancea}}</td>
+									<td ng-if="pageInfo.show_full_report">{{tr.balanceb}}</td>
 									<td>{{tr.balance}}</td>
+									<td ng-if="pageInfo.show_full_report">{{tr.balancec}}</td>
+									<td ng-if="pageInfo.show_full_report">{{tr.balancea + tr.balanceb}}</td>
+									<td ng-if="pageInfo.show_full_report">{{tr.balance + tr.balancec}}</td>
+									<td ng-if="pageInfo.show_full_report" style="color:{{(tr.balancea + tr.balanceb) == (tr.balance + tr.balancec) ? 'green' : 'red'}}">{{(tr.balancea + tr.balanceb) == (tr.balance + tr.balancec)}}</td>
 								</tr>
 							</table>
 						</div>

@@ -307,4 +307,28 @@ angular.module('yapp')
         $state.go('statement');
     };
     
+    $scope.statement_calc = function(tr){
+        if(tr.action == 'savings'){
+          $scope.pageInfo.ovt.a = parseInt($scope.pageInfo.ovt.a) + parseInt(tr.amount);
+          
+        } else if(tr.action == 'loan'){
+          $scope.pageInfo.ovt.c = parseInt($scope.pageInfo.ovt.c) + parseInt(tr.amount);
+        } else if(tr.action == 'payloan'){
+          var spi = tr.notes.split('Interest - ');
+          if(spi.length == 2){
+            var intt = spi[1];
+            var princi = tr.amount - intt;
+            
+            $scope.pageInfo.ovt.b = parseInt($scope.pageInfo.ovt.b) + parseInt(intt);
+            $scope.pageInfo.ovt.c = $scope.pageInfo.ovt.c - princi;
+            
+          }
+        }
+
+        tr.balancea = angular.copy($scope.pageInfo.ovt.a);
+        tr.balanceb = angular.copy($scope.pageInfo.ovt.b);
+        tr.balancec = angular.copy($scope.pageInfo.ovt.c);
+
+    };
+
   });
