@@ -67,7 +67,7 @@ angular.module('yapp')
     
     $scope.transactions = {};
     
-    firebase.database().ref('transaction').on('value', function(snap) {
+    firebase.database().ref('transaction').limitToLast(50).on('value', function(snap) {
         $scope.transactions = snap.val();
         $scope.$apply();
     });
