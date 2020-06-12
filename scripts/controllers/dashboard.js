@@ -19,6 +19,20 @@ angular.module('yapp')
     $scope.userObj = {};
     $scope.overview = {};
     $scope.eligilityAmount = 0;
+
+    $scope.report = {};
+    
+    $scope.reportDetails = function(id){
+      if(id === undefined){
+        $scope.report.user = angular.copy($scope.user.id);
+      }
+
+      $scope.report.transactions = [];
+      firebase.database().ref('transaction').orderByChild('user').equalTo($scope.report.user).on('value', function(snap) {
+        $scope.report.transactions = snap.val();
+        $scope.$apply();
+      });
+    };
     
     $scope.currentTime = new Date().getTime();
     $scope.expense = {amount: 500};

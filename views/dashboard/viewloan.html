@@ -63,7 +63,7 @@
 												<td>{{p.outstanding}}</td>
 												<td>-</td>
 											</tr>
-											<tr ng-if="user.isAdmin && (missed_payment || ((currentTime | date: 'MM-yyyy') != (myloan.lastpaid | date: 'MM-yyyy')))">
+											<tr ng-if="myloan.outstanding > 0 && user.isAdmin && (missed_payment || ((currentTime | date: 'MM-yyyy') != (myloan.lastpaid | date: 'MM-yyyy')))">
 												<td>{{myloan.totaldue+1}}</td>
 												<td>{{(currentTime | date: 'dd-MM-yyyy')}}</td>
 												<td ng-init="myloan.interestrate = myloan.totaldue > 12 ? 2 : 1">{{myloan.interestrate}}RS</td>

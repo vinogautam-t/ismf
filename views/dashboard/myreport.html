@@ -1,0 +1,55 @@
+<div ng-init="reportDetails();">
+	<div ng-include="'menu.html'"></div>
+	<snap-dragger></snap-dragger>
+	<snap-content snap-opt-tap-to-close="false">
+
+		<a href="" snap-toggle="left" ng-click="menuOpen = !menuOpen">
+			<span class="menutoggle">
+				<i ng-hide="menuOpen" class="fa fa-bars fa-2x" ></i>
+				<i ng-show="menuOpen" class="fa fa-times fa-2x" ></i>
+			</span>
+		</a>
+		
+		<div class="fr">
+		<h2>Report</h2>
+		</div>
+		<div class="jumbotron">
+			<div class="text-center">
+				<div class="form-group" ng-if="user.isAdmin">
+					<select ng-change="reportDetails(report.user)" required class="form-control input-lg" ng-model="report.user">
+						<option value="">Select user</option>
+						<option value="-1">Others</option>
+						<option ng-repeat="us in users" value="{{us.id}}">{{us.name}}-{{us.phone}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 text-center overview-tiles">
+						<div class="table-responsive">
+							<table class="table">
+								<tr>
+									<th>#</th>
+									<th>Date</th>
+									<th>Particulars</th>
+									<th>Type</th>
+									<th>Amount</th>
+								</tr>
+								<tr ng-repeat="(k,tr) in report.transactions">
+									<td>{{$index + 1}}</td>
+									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
+									<td><span ng-if="tr.user != -1">{{userObj[tr.user].name}} </span>
+										<span ng-if="tr.notes && tr.action != 'payloan' && tr.action != 'loan'"> - {{tr.notes}}</span>
+										<span ng-if="tr.notes && (tr.action == 'payloan' || tr.action == 'loan')"> - <a style="color: inherit;" ui-sref="viewloan({id:tr.ref})">{{tr.notes}}</a></span>
+									</td>
+									<td>{{tr.action}}</td>
+									<td class="{{tr.type}}"><span ng-if="tr.type == 'debit'">-</span>{{tr.amount}}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</snap-content>	
+</div>
