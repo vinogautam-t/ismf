@@ -29,6 +29,7 @@
 								<label>Paid For</label>
 								<select required class="form-control input-lg" ng-model="expense.user">
 									<option value="">Select user</option>
+									<option value="-1">Others</option>
 									<option ng-repeat="us in users" value="{{us.id}}">{{us.name}}-{{us.phone}}</option>
 								</select>
 							</div>

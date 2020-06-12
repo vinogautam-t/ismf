@@ -46,7 +46,7 @@
 								<tr ng-repeat="(k,tr) in transactions" ng-init="statement_calc(tr);">
 									<td>{{$index + 1}}</td>
 									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
-									<td>{{userObj[tr.user].name}}
+									<td><span ng-if="tr.user != -1">{{userObj[tr.user].name}} </span>
 										<span ng-if="tr.notes && tr.action != 'payloan'"> - {{tr.notes}}</span>
 										<span ng-if="tr.notes && tr.action == 'payloan'"> - <a style="color: inherit;" ui-sref="viewloan({id:tr.ref})">{{tr.notes}}</a></span>
 									</td>

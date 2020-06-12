@@ -29,6 +29,8 @@ angular.module('yapp')
               if(dataa.password == $scope.login.password){
                   Session.create(dataa, true);
   					      $location.path('/dashboard');
+              } else {
+                $.notify("Invalid login details", "error");
               }
             }
             $scope.$apply();
