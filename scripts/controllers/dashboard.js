@@ -276,6 +276,9 @@ angular.module('yapp')
                 $scope.myloan.totaldue++;
                 vv.ind = $scope.myloan.totaldue;
               });
+          } else {
+            $scope.myloan.outstanding = angular.copy($scope.myloan.amount);
+            $scope.myloan.totalinterest = 0;
           }
       });
     };
