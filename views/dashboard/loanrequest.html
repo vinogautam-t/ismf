@@ -20,7 +20,7 @@
 		</div>
 		<p class="text-center" style="font-size:20px;margin-top:30px;color:red;" ng-if="loanrequestExist">Already your request pending</p>
 		<p class="text-center" style="font-size:20px;margin-top:30px;color:red;" ng-if="loanExist">Already you have active loan</p>
-		<div class="jumbotron" ng-if="!loanrequestExist && !loanExist">
+		<div class="jumbotron" ng-if="user.isAdmin || (!loanrequestExist && !loanExist)">
 			<div class="container">
 				<form name="expense_form" role="form" class="bottom-75" ng-submit="newloadRequest()" novalidate="">
 					<div class="table-form">
