@@ -22,6 +22,12 @@ angular.module('yapp')
 
     $scope.report = {};
     
+    $scope.saveData = function(tr, k) {
+      firebase.database().ref('transaction/'+k+'/user/').set(tr.user);
+      firebase.database().ref('transaction/'+k+'/notes/').set(tr.notes);
+      firebase.database().ref('transaction/'+k+'/ts/').set(new Date(tr.dt).getTime());
+    }
+
     $scope.reportDetails = function(id){
       if(id === undefined){
         $scope.report.user = angular.copy($scope.user.id);

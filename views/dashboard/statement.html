@@ -35,6 +35,7 @@
 									<th>Particulars</th>
 									<th>Type</th>
 									<th>Amount</th>
+									<th ng-show="user.isAdmin">Edit</th>
 									<th ng-if="pageInfo.show_full_report">Total Savings(A)</th>
 									<th ng-if="pageInfo.show_full_report">Total Interest(B)</th>
 									<th>Out. Balance<span ng-if="pageInfo.show_full_report">(C)</span></th>
@@ -45,13 +46,23 @@
 								</tr>
 								<tr ng-repeat="(k,tr) in transactions" ng-init="statement_calc(tr);">
 									<td>{{$index + 1}}</td>
-									<td>{{tr.ts | date: 'dd-MM-yyyy'}}</td>
-									<td><span ng-if="tr.user != -1">{{userObj[tr.user].name}} </span>
+									<td ng-show="!tr.edit">{{tr.ts | date: 'dd-MM-yyyy'}}</td>
+									<td ng-show="tr.edit"><input ng-model="tr.dt"></td>
+									<td ng-show="!tr.edit"><span ng-if="tr.user != -1">{{userObj[tr.user].name}} </span>
 										<span ng-if="tr.notes && tr.action != 'payloan' && tr.action != 'loan'"> - {{tr.notes}}</span>
 										<span ng-if="tr.notes && (tr.action == 'payloan' || tr.action == 'loan')"> - <a style="color: inherit;" ui-sref="viewloan({id:tr.ref})">{{tr.notes}}</a></span>
 									</td>
+									<td ng-if="tr.edit">
+										<select required class="input-lg" ng-model="tr.user">
+											<option value="">Select</option>
+											<option ng-repeat="us in users" value="{{us.id}}">{{us.name}}-{{us.phone}}-{{us.id}}</option>
+										</select>
+										<input type="text" ng-model="tr.notes" name="">
+									</td>
 									<td>{{tr.action}}</td>
 									<td class="{{tr.type}}"><span ng-if="tr.type == 'debit'">-</span>{{tr.amount}}</td>
+									<td ng-show="user.isAdmin && !tr.edit" ng-click="tr.edit=true;"><i class="fa fa-pencil"></i></td>
+									<td ng-show="user.isAdmin && tr.edit" ng-click="saveData(tr, k);"><i class="fa fa-save"></i></td>
 									<td ng-if="pageInfo.show_full_report">{{tr.balancea}}</td>
 									<td ng-if="pageInfo.show_full_report">{{tr.balanceb}}</td>
 									<td>{{tr.balance}}</td>
