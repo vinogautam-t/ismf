@@ -195,11 +195,17 @@ angular.module('yapp')
         $scope.expense.action = 'savings';
         $scope.expense.paid_by = angular.copy($scope.user.id);
         if($scope.user.isAdmin){
+          
           $scope.overview.balance = parseInt($scope.expense.amount) + parseInt($scope.overview.balance);
           firebase.database().ref('summary/balance').set($scope.overview.balance);
           
-          $scope.overview.savings = parseInt($scope.expense.amount) + parseInt($scope.overview.savings);
-          firebase.database().ref('summary/savings').set($scope.overview.savings);
+          if ($scope.expense.user === '-1') {
+            $scope.overview.interest = parseInt($scope.expense.amount) + parseInt($scope.overview.interest);
+            firebase.database().ref('summary/interest').set($scope.overview.interest);
+          } else {
+            $scope.overview.savings = parseInt($scope.expense.amount) + parseInt($scope.overview.savings);
+            firebase.database().ref('summary/savings').set($scope.overview.savings);
+          }
           
           $scope.expense.balance = $scope.overview.balance;
           firebase.database().ref('transaction').push($scope.expense);
